@@ -15,7 +15,6 @@ import sys
 #PasswordVault is a List of String
 # Each string in a password value is of the form: ``username:password:domain''
 
-#TODO: REPLACE """Your code goes""" with actual code ... 
 
 def encryptFile(plaintextData,key):
     nonce = get_random_bytes(AES.block_size)
@@ -27,8 +26,8 @@ def encryptFile(plaintextData,key):
     encryptionResults = json.dumps(dict(zip(json_k, json_v)))
     return encryptionResults
 
-#-------------------------------------------------------------------------------
-    
+
+
 def decryptFile(encryptedJson, key):
     values = json.loads(encryptedJson)
     json_k = ['nonce', 'header', 'ciphertext', 'tag']
@@ -38,7 +37,6 @@ def decryptFile(encryptedJson, key):
     plaintextData = cipher.decrypt_and_verify(dict(zip(json_k, json_v))['ciphertext'], dict(zip(json_k, json_v))['tag'])
     return plaintextData.decode('utf-8')
 
-#-------------------------------------------------------------------------------
 
 # computerMasterKey : String -> String of bytes 
 # Calculates the encryption key from the user password
@@ -47,7 +45,7 @@ def computerMasterKey(password):
     key = scrypt(password.encode(), salt, key_len=32, N=2**14, r=8, p=1)
     return key
 
-#-------------------------------------------------------------------------------
+
 
 def decryptAndReconstructVault(hashedusername, password):
 
@@ -70,9 +68,8 @@ def decryptAndReconstructVault(hashedusername, password):
 
     return passwordvault
 
-#-------------------------------------------------------------------------------
 
-#modified to give user three attempts to login
+
 def checkVaultExistenceOrCreate():
     passwordvault = []
     maxAttempts = 3
@@ -97,14 +94,14 @@ def checkVaultExistenceOrCreate():
     print("Maximum login attempts reached. Quitting.")
     quit()
 
-#-------------------------------------------------------------------------------
+
 
 def generatePassword():
     characters = string.ascii_letters + string.digits
     result = ''.join(random.choice(characters) for _ in range(16))
     return result
 
-#-------------------------------------------------------------------------------
+
 
 def AddPassword(passwordvault):
     username = input("Enter username: ")
@@ -115,7 +112,7 @@ def AddPassword(passwordvault):
     passwordvault.append(entry)
     print('Record Entry added')
 
-#-------------------------------------------------------------------------------
+
 
 def CreatePassword(passwordvault):
     username = input('Enter username: ')
@@ -125,7 +122,7 @@ def CreatePassword(passwordvault):
     passwordvault.append(entry)
     print('Record Entry added')
 
-#-------------------------------------------------------------------------------
+
 
 def UpdatePassword(passwordvault):
     domainUpdated = input('Enter the domain to update: ')
@@ -136,7 +133,7 @@ def UpdatePassword(passwordvault):
             passwordvault[i] = f'{username}:{newPassword}:{domainUpdated}'
     print('Record Entry Updated')
 
-#-------------------------------------------------------------------------------
+
 
 def LookupPassword(passwordvault):
     domainTarget = input('Enter domain to lookup: ')
@@ -148,7 +145,7 @@ def LookupPassword(passwordvault):
             print(f'Domain: {domainTarget}')
             return
 
-#-------------------------------------------------------------------------------
+
 
 def DeletePassword(passwordvault):
     domainDeleted = input('Enter domain you want to delete: ')
@@ -157,12 +154,11 @@ def DeletePassword(passwordvault):
             passwordvault.remove(entry)
     print('Record Entry Deleted')
 
-#-------------------------------------------------------------------------------
 
 def displayVault(passwordvault):
     print(passwordvault)
 
-#-------------------------------------------------------------------------------
+
 
 def EncryptVaultAndSave(passwordvault, password, hashedusername):
     writeString = ''
@@ -185,7 +181,7 @@ def EncryptVaultAndSave(passwordvault, password, hashedusername):
     file.close()
     print("Password Vault encrypted and saved to file")
 
-#-------------------------------------------------------------------------------
+
 
 def main():
     username, password, hashedusername, passwordvault = checkVaultExistenceOrCreate()
