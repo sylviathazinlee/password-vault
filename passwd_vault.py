@@ -13,9 +13,7 @@ import sys
 
 
 #PasswordVault is a List of String
-# Each string in a password value is of the form: ``username:password:domain''
-
-
+#Each string in a password value is of the form: ``username:password:domain''
 def encryptFile(plaintextData,key):
     nonce = get_random_bytes(AES.block_size)
     cipher = AES.new(key, AES.MODE_GCM, nonce = nonce)
@@ -41,7 +39,7 @@ def decryptFile(encryptedJson, key):
 # computerMasterKey : String -> String of bytes 
 # Calculates the encryption key from the user password
 def computerMasterKey(password):
-    salt = "<\n<~\x0e\xeetGR\xfe;\xec \xfc)8" #given from documentation
+    salt = "<\n<~\x0e\xeetGR\xfe;\xec \xfc)8"
     key = scrypt(password.encode(), salt, key_len=32, N=2**14, r=8, p=1)
     return key
 
